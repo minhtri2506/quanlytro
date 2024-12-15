@@ -1,5 +1,5 @@
 import { Stack, useRouter, usePathname } from 'expo-router';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, Platform } from 'react-native'; // Import Platform từ react-native
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -20,6 +20,11 @@ export default function RootLayout() {
     }
   };
 
+  // if (Platform.OS === 'web') {
+    // Nếu đang chạy trên web, return null để không render layout mobile
+    // return null;
+  // }
+
   return (
     <Stack
       screenOptions={{
@@ -30,6 +35,23 @@ export default function RootLayout() {
         headerTitleStyle: {
           fontWeight: 'bold',
         },
+        headerLeft: () => (
+          // Chỉ hiển thị nút back nếu không phải là màn hình /login hoặc /
+          pathname !== '/login' && pathname !== '/' && (
+            <TouchableOpacity 
+              onPress={() => {
+                // Kiểm tra xem có thể quay lại không, nếu không thì điều hướng về trang chủ
+                if (router.canGoBack()) {
+                  router.back();
+                } else {
+                  router.replace('/');
+                }
+              }} 
+              style={{ paddingLeft: 10 }}>
+              <Ionicons name="arrow-back-outline" size={24} color="#fff" />
+            </TouchableOpacity>
+          )
+        ),
         // Chỉ hiển thị headerRight khi không phải màn hình "login"
         headerRight: () => (
           pathname !== '/login' && (
@@ -42,6 +64,8 @@ export default function RootLayout() {
       <Stack.Screen name="login" options={{ title: 'Đăng nhập' }} />
       <Stack.Screen name="index" options={{ title: 'Trang chủ' }} />
       <Stack.Screen name="(home)/room" options={{title: 'Phòng' }} />
+      <Stack.Screen name="(home)/createRoom" options={{title: 'Tạo phòng' }} />
+      <Stack.Screen name="(home)/statistical" options={{title: 'Thống Kê Doanh Thu' }} />
     </Stack>
   );
 }

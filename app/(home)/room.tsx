@@ -1,8 +1,7 @@
-// src/screens/RoomScreen.tsx
-
 import React, { useState } from 'react';
+import { useRouter } from 'expo-router';
 import { View, Text, Button, FlatList } from 'react-native';
-import { styles } from '../styles/styles'; // Import styles
+import { styles } from '../styles/styles';
 
 interface Room {
   id: string;
@@ -11,6 +10,7 @@ interface Room {
 }
 
 export default function RoomScreen() {
+  const router = useRouter();
   const [data, setData] = useState<Room[]>([
     { id: '1', name: 'Room 1', status: 'Available' },
     { id: '2', name: 'Room 2', status: 'Occupied' },
@@ -18,19 +18,27 @@ export default function RoomScreen() {
   ]);
 
   const handleButtonClick = () => {
-    console.log('Button clicked!');
+    router.push('/createRoom');
   };
 
   const renderItem = ({ item }: { item: Room }) => (
     <View style={styles.row}>
-      <Text>{item.name}</Text>
-      <Text>{item.status}</Text>
+      <Text style={styles.cell}>{item.name}</Text>
+      <Text style={[styles.cell, styles.lastCell]}>{item.status}</Text>
     </View>
   );
 
   return (
     <View style={styles.pd16}>
-      <Button title="Click Me" onPress={handleButtonClick} />
+      <View style={styles.button}>
+        <Button title="Thêm phòng" onPress={handleButtonClick} />
+      </View>
+      {/* Table Header */}
+      <View style={[styles.row, styles.header]}>
+        <Text style={styles.cell}>Room Name</Text>
+        <Text style={[styles.cell, styles.lastCell]}>Status</Text>
+      </View>
+      {/* Table Body */}
       <FlatList
         data={data}
         renderItem={renderItem}

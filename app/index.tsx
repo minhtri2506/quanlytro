@@ -26,7 +26,7 @@ export default function Index() {
   };
 
   const navigateToScreen2 = () => {
-    router.push('/');
+    router.push('/statistical');
   };
 
   if (isLoading) {
@@ -38,10 +38,10 @@ export default function Index() {
   return (
     <View style={styles.container}>
       <View style={styles.buttonContainer}>
-        <Button title="Go to Screen 1" onPress={navigateToScreen1} />
+        <Button title="Danh sách phòng" onPress={navigateToScreen1} />
       </View>
       <View style={styles.buttonContainer}>
-        <Button title="Go to Screen 2" onPress={navigateToScreen2} />
+        <Button title="Thống Kê Doanh Thu" onPress={navigateToScreen2} />
       </View>
     </View>
   );
@@ -63,5 +63,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     padding: 10,
+    width: '100%',
   },
 });
